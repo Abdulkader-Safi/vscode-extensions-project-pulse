@@ -1,5 +1,9 @@
 const esbuild = require("esbuild");
-const { spawn } = require("child_process");
+const fs = require("fs");
+const path = require("path");
+const postcss = require("postcss");
+const tailwindcss = require("@tailwindcss/postcss");
+const autoprefixer = require("autoprefixer");
 
 const production = process.argv.includes("--production");
 const watch = process.argv.includes("--watch");
@@ -32,39 +36,18 @@ const esbuildProblemMatcherPlugin = {
 const postcssPlugin = {
   name: "postcss-plugin",
   setup(build) {
-    build.onEnd(() => {
-      return new Promise((resolve, reject) => {
-        const args = [
-          "postcss",
-          "./src/webview/index.css",
-          "-o",
-          "./dist/webview.css",
-        ];
+    build.onEnd(async () => {
+      const inputFile = path.resolve("./src/webview/index.css");
+      const outputFile = path.resolve("./dist/webview.css");
+      const css = fs.readFileSync(inputFile, "utf-8");
 
-        if (production) {
-          args.push("--env", "production");
-        }
-
-        const postcss = spawn("npx", args, {
-          shell: true,
-        });
-
-        postcss.stdout.on("data", (data) => {
-          console.log(data.toString());
-        });
-
-        postcss.stderr.on("data", (data) => {
-          console.error(data.toString());
-        });
-
-        postcss.on("close", (code) => {
-          if (code === 0) {
-            resolve();
-          } else {
-            reject(new Error(`PostCSS process exited with code ${code}`));
-          }
-        });
+      const result = await postcss([tailwindcss, autoprefixer]).process(css, {
+        from: inputFile,
+        to: outputFile,
       });
+
+      fs.mkdirSync(path.dirname(outputFile), { recursive: true });
+      fs.writeFileSync(outputFile, result.css);
     });
   },
 };

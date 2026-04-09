@@ -1,7 +1,7 @@
 {
-  "name": "react-starter",
-  "displayName": "react-starter",
-  "description": "",
+  "name": "project-pulse",
+  "displayName": "Project Pulse",
+  "description": "Monitor health signals across all your client projects without leaving your editor.",
   "version": "0.0.1",
   "engines": {
     "vscode": "^1.106.1"
@@ -14,14 +14,80 @@
   "contributes": {
     "commands": [
       {
-        "command": "react-starter.helloWorld",
-        "title": "Hello World"
-      },
-      {
-        "command": "react-starter.openReactView",
-        "title": "Open React View"
+        "command": "project-pulse.openDashboard",
+        "title": "Project Pulse: Open Dashboard"
       }
-    ]
+    ],
+    "configuration": {
+      "title": "Project Pulse",
+      "properties": {
+        "projectPulse.lighthouseApiKey": {
+          "type": "string",
+          "default": "",
+          "description": "Google PageSpeed Insights API key for Lighthouse scans."
+        },
+        "projectPulse.checkInterval": {
+          "type": "number",
+          "default": 15,
+          "description": "Default check interval in minutes."
+        },
+        "projectPulse.sslWarningDays": {
+          "type": "number",
+          "default": 30,
+          "description": "SSL expiry warning threshold (days)."
+        },
+        "projectPulse.sslCriticalDays": {
+          "type": "number",
+          "default": 7,
+          "description": "SSL expiry critical threshold (days)."
+        },
+        "projectPulse.uptimeWarningThreshold": {
+          "type": "number",
+          "default": 99.5,
+          "description": "Uptime warning threshold (percentage)."
+        },
+        "projectPulse.lighthouseAlertThreshold": {
+          "type": "number",
+          "default": 80,
+          "description": "Lighthouse score alert threshold."
+        },
+        "projectPulse.checks.ssl": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable SSL certificate monitoring."
+        },
+        "projectPulse.checks.dns": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable DNS resolution checks."
+        },
+        "projectPulse.checks.uptime": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable uptime monitoring."
+        },
+        "projectPulse.checks.security": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable dependency security audits."
+        },
+        "projectPulse.checks.lighthouse": {
+          "type": "boolean",
+          "default": false,
+          "description": "Enable Lighthouse performance scans (requires API key)."
+        },
+        "projectPulse.checks.headers": {
+          "type": "boolean",
+          "default": true,
+          "description": "Enable HTTP security headers check."
+        },
+        "projectPulse.dataDirectory": {
+          "type": "string",
+          "default": "~/.project-pulse",
+          "description": "Directory for storing historical monitoring data."
+        }
+      }
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run package",
@@ -60,7 +126,6 @@
   },
   "dependencies": {
     "react": "^19.2.0",
-    "react-dom": "^19.2.0",
-    "react-router-dom": "^7.9.6"
+    "react-dom": "^19.2.0"
   }
 }

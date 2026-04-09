@@ -1,22 +1,45 @@
 import * as vscode from "vscode";
-import { ReactWebviewProvider } from "./WebviewProvider";
+import { ProjectPulsePanel } from "./WebviewProvider";
+import { ProjectService } from "./services/ProjectService";
+import { SSLService } from "./services/SSLService";
+import { DNSService } from "./services/DNSService";
+import { UptimeService } from "./services/UptimeService";
+import { HeadersService } from "./services/HeadersService";
+import { AlertService } from "./services/AlertService";
+import { StorageService } from "./services/StorageService";
+import { MonitoringScheduler } from "./services/MonitoringScheduler";
+
+let scheduler: MonitoringScheduler | undefined;
 
 export function activate(context: vscode.ExtensionContext) {
-  context.subscriptions.push(
-    vscode.commands.registerCommand("react-starter.openReactView", () => {
-      ReactWebviewProvider.createOrShow(context.extensionUri);
-    })
+  // Initialize services
+  const projectService = new ProjectService(context);
+  const storageService = new StorageService();
+  const alertService = new AlertService(context);
+
+  // Create scheduler
+  scheduler = new MonitoringScheduler(
+    projectService,
+    new SSLService(),
+    new DNSService(),
+    new UptimeService(),
+    new HeadersService(),
+    alertService,
+    storageService,
   );
 
-  // const disposable = vscode.commands.registerCommand(
-  //   "react-starter.helloWorld",
-  //   () => {
-  //     vscode.window.showInformationMessage("Hello World from react-starter!");
-  //   }
-  // );
-  //
-  // context.subscriptions.push(disposable);
+  // Start background monitoring
+  scheduler.startAll();
+
+  context.subscriptions.push(
+    vscode.commands.registerCommand("project-pulse.openDashboard", () => {
+      ProjectPulsePanel.createOrShow(context);
+    }),
+  );
 }
 
-// This method is called when your extension is deactivated
-export function deactivate() {}
+export function deactivate() {
+  if (scheduler) {
+    scheduler.stopAll();
+  }
+}
