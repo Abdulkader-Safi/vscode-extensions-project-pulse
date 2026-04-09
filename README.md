@@ -2,7 +2,7 @@
 
 > Monitor health signals across all your client projects without leaving your editor.
 
-![Dashboard](images/dashboard.png)
+![Dashboard](img/MainDashboard.png)
 
 ---
 
@@ -14,7 +14,7 @@ Project Pulse provides a unified dashboard for monitoring the health of multiple
 
 Track certificate expiry, issuer, validity chain, and get alerts before certificates lapse.
 
-![SSL & DNS Monitor](images/ssl-dns.png)
+![SSL & DNS Monitor](img/ssl-dns.png)
 
 ### DNS Resolution Checks
 
@@ -24,13 +24,13 @@ Monitor DNS propagation across multiple servers (Google, Cloudflare, OpenDNS, Qu
 
 Ping endpoints at configurable intervals and track response times, status codes, and downtime.
 
-![Uptime & Performance](images/uptime-performance.png)
+![Uptime & Performance](img/uptime-performance.png)
 
 ### Dependency Security Audit
 
 Scan project dependencies for known vulnerabilities using `npm audit` or the OSV.dev API.
 
-![Security Advisories](images/security.png)
+![Security Advisories](img/security.png)
 
 ### Lighthouse Performance Scans
 
@@ -44,19 +44,13 @@ Analyze response headers for security best practices (HSTS, CSP, X-Content-Type-
 
 Drill into any project to see all monitoring data at a glance with per-check run controls.
 
-![Project Detail](images/project-detail.png)
-
-### Add Project Wizard
-
-3-step wizard to configure a new project: details, monitoring toggles, and review.
-
-![Add Project](images/add-project.png)
+![Project Detail](img/project-detail.png)
 
 ### Settings & Alerts
 
 Configure monitoring thresholds, notification preferences, and manage monitored projects. Alerts fire as VS Code notifications for critical issues.
 
-![Settings](images/settings.png)
+![Settings](img/settings.png)
 
 ---
 
