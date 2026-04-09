@@ -1,3 +1,7 @@
+<p align="center">
+  <img src="img/Logo.png" alt="Project Pulse" width="128" />
+</p>
+
 # Project Pulse - VS Code Extension
 
 > Monitor health signals across all your client projects without leaving your editor.
@@ -67,7 +71,7 @@ Configure monitoring thresholds, notification preferences, and manage monitored 
 1. Clone the repository:
 
    ```bash
-   git clone <repo-url>
+   git clone https://github.com/Abdulkader-Safi/vscode-extensions-project-pulse.git
    cd ProjectPulse
    ```
 

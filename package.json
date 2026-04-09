@@ -3,12 +3,23 @@
   "displayName": "Project Pulse",
   "description": "Monitor health signals across all your client projects without leaving your editor.",
   "version": "0.0.1",
+  "publisher": "AbdulkaderSafi",
+  "author": {
+    "name": "Safi",
+    "email": "safi.abdulkader@gmail.com",
+    "url": "https://abdulkadersafi.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Abdulkader-Safi/vscode-extensions-project-pulse"
+  },
   "engines": {
     "vscode": "^1.106.1"
   },
   "categories": [
     "Other"
   ],
+  "icon": "img/Logo.png",
   "activationEvents": [],
   "main": "./dist/extension.js",
   "contributes": {
@@ -115,6 +126,7 @@
     "@vscode/test-cli": "^0.0.11",
     "@vscode/test-electron": "^2.5.2",
     "autoprefixer": "^10.4.22",
+    "baseline-browser-mapping": "^2.10.16",
     "esbuild": "^0.25.10",
     "esbuild-plugin-inline-import": "^1.1.0",
     "eslint": "^9.36.0",

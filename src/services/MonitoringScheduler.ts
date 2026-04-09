@@ -33,7 +33,9 @@ export class MonitoringScheduler {
   startProject(projectId: string) {
     this.stopProject(projectId);
     const project = this._projectService.getById(projectId);
-    if (!project) return;
+    if (!project) {
+      return;
+    }
 
     const intervalMs = project.monitoring.uptimeInterval * 60 * 1000;
 
@@ -65,15 +67,25 @@ export class MonitoringScheduler {
 
   private async _runChecksForProject(projectId: string) {
     const project = this._projectService.getById(projectId);
-    if (!project) return;
+    if (!project) {
+      return;
+    }
 
     const domain = extractDomain(project.url);
     const checks: CheckType[] = [];
 
-    if (project.monitoring.ssl) checks.push("ssl");
-    if (project.monitoring.dns) checks.push("dns");
-    if (project.monitoring.uptime) checks.push("uptime");
-    if (project.monitoring.headers) checks.push("headers");
+    if (project.monitoring.ssl) {
+      checks.push("ssl");
+    }
+    if (project.monitoring.dns) {
+      checks.push("dns");
+    }
+    if (project.monitoring.uptime) {
+      checks.push("uptime");
+    }
+    if (project.monitoring.headers) {
+      checks.push("headers");
+    }
 
     for (const check of checks) {
       try {

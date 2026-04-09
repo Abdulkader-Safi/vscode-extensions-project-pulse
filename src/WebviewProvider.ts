@@ -143,12 +143,24 @@ export class ProjectPulsePanel {
         const proj = this._projectService.getById(data.projectId);
         if (proj) {
           const checks: CheckType[] = [];
-          if (proj.monitoring.ssl) checks.push("ssl");
-          if (proj.monitoring.dns) checks.push("dns");
-          if (proj.monitoring.uptime) checks.push("uptime");
-          if (proj.monitoring.security) checks.push("security");
-          if (proj.monitoring.lighthouse) checks.push("lighthouse");
-          if (proj.monitoring.headers) checks.push("headers");
+          if (proj.monitoring.ssl) {
+            checks.push("ssl");
+          }
+          if (proj.monitoring.dns) {
+            checks.push("dns");
+          }
+          if (proj.monitoring.uptime) {
+            checks.push("uptime");
+          }
+          if (proj.monitoring.security) {
+            checks.push("security");
+          }
+          if (proj.monitoring.lighthouse) {
+            checks.push("lighthouse");
+          }
+          if (proj.monitoring.headers) {
+            checks.push("headers");
+          }
           for (const check of checks) {
             await this._runSingleCheck(data.projectId, check);
           }
@@ -159,10 +171,18 @@ export class ProjectPulsePanel {
         const allProjects = this._projectService.getAll();
         for (const proj of allProjects) {
           const checks: CheckType[] = [];
-          if (proj.monitoring.ssl) checks.push("ssl");
-          if (proj.monitoring.dns) checks.push("dns");
-          if (proj.monitoring.uptime) checks.push("uptime");
-          if (proj.monitoring.headers) checks.push("headers");
+          if (proj.monitoring.ssl) {
+            checks.push("ssl");
+          }
+          if (proj.monitoring.dns) {
+            checks.push("dns");
+          }
+          if (proj.monitoring.uptime) {
+            checks.push("uptime");
+          }
+          if (proj.monitoring.headers) {
+            checks.push("headers");
+          }
           for (const check of checks) {
             await this._runSingleCheck(proj.id, check);
           }
@@ -178,8 +198,14 @@ export class ProjectPulsePanel {
           checkInterval: config.get<number>("checkInterval", 15),
           sslWarningDays: config.get<number>("sslWarningDays", 30),
           sslCriticalDays: config.get<number>("sslCriticalDays", 7),
-          uptimeWarningThreshold: config.get<number>("uptimeWarningThreshold", 99.5),
-          lighthouseAlertThreshold: config.get<number>("lighthouseAlertThreshold", 80),
+          uptimeWarningThreshold: config.get<number>(
+            "uptimeWarningThreshold",
+            99.5,
+          ),
+          lighthouseAlertThreshold: config.get<number>(
+            "lighthouseAlertThreshold",
+            80,
+          ),
           checks: {
             ssl: config.get<boolean>("checks.ssl", true),
             dns: config.get<boolean>("checks.dns", true),
@@ -188,7 +214,10 @@ export class ProjectPulsePanel {
             lighthouse: config.get<boolean>("checks.lighthouse", false),
             headers: config.get<boolean>("checks.headers", true),
           },
-          dataDirectory: config.get<string>("dataDirectory", "~/.project-pulse"),
+          dataDirectory: config.get<string>(
+            "dataDirectory",
+            "~/.project-pulse",
+          ),
         };
         this.postMessage({ type: "settings", data: settings });
         break;
@@ -209,7 +238,9 @@ export class ProjectPulsePanel {
 
   private async _runSingleCheck(projectId: string, check: CheckType) {
     const project = this._projectService.getById(projectId);
-    if (!project) return;
+    if (!project) {
+      return;
+    }
 
     this.postMessage({ type: "checkStarted", projectId, check });
 
