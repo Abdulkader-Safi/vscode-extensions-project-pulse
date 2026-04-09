@@ -1,141 +1,153 @@
-# React Starter - VSCode Extension
+# Project Pulse - VS Code Extension
 
-A VSCode extension template built with React, TailwindCSS, and React Router DOM for building modern webview-based extensions.
+> Monitor health signals across all your client projects without leaving your editor.
+
+![Dashboard](images/dashboard.png)
+
+---
 
 ## Features
 
-This extension includes two example pages demonstrating VSCode webview API integration:
+Project Pulse provides a unified dashboard for monitoring the health of multiple web projects. Add a website URL, and the extension continuously monitors SSL certificates, DNS resolution, uptime, dependency security, Lighthouse performance, and HTTP security headers — surfacing issues before they become client-facing problems.
 
-1. **Notification Page** - Send messages from the webview to VSCode to show notifications
-2. **Directory Listing Page** - Request data from VSCode and display it in the React UI
+### SSL Certificate Monitoring
 
-## Project Structure
+Track certificate expiry, issuer, validity chain, and get alerts before certificates lapse.
 
-```
-.
-├── src/
-│   ├── extension.ts              # Extension entry point
-│   ├── WebviewProvider.ts        # Webview panel provider
-│   └── webview/
-│       ├── index.tsx             # React app entry point
-│       ├── index.css             # TailwindCSS imports
-│       ├── App.tsx               # Main app with routing
-│       ├── declarations.d.ts     # Type declarations
-│       └── pages/
-│           ├── NotificationPage.tsx
-│           └── DirectoryListPage.tsx
-├── dist/                         # Build output
-├── esbuild.js                    # Build configuration
-├── tailwind.config.js           # TailwindCSS configuration
-└── postcss.config.js            # PostCSS configuration
-```
+![SSL & DNS Monitor](images/ssl-dns.png)
 
-## Development
+### DNS Resolution Checks
+
+Monitor DNS propagation across multiple servers (Google, Cloudflare, OpenDNS, Quad9) and detect record changes.
+
+### Uptime Monitoring
+
+Ping endpoints at configurable intervals and track response times, status codes, and downtime.
+
+![Uptime & Performance](images/uptime-performance.png)
+
+### Dependency Security Audit
+
+Scan project dependencies for known vulnerabilities using `npm audit` or the OSV.dev API.
+
+![Security Advisories](images/security.png)
+
+### Lighthouse Performance Scans
+
+Run Lighthouse audits via the Google PageSpeed Insights API and track performance, accessibility, best practices, and SEO scores.
+
+### HTTP Security Headers Check
+
+Analyze response headers for security best practices (HSTS, CSP, X-Content-Type-Options, X-Frame-Options, Referrer-Policy, Permissions-Policy).
+
+### Project Detail View
+
+Drill into any project to see all monitoring data at a glance with per-check run controls.
+
+![Project Detail](images/project-detail.png)
+
+### Add Project Wizard
+
+3-step wizard to configure a new project: details, monitoring toggles, and review.
+
+![Add Project](images/add-project.png)
+
+### Settings & Alerts
+
+Configure monitoring thresholds, notification preferences, and manage monitored projects. Alerts fire as VS Code notifications for critical issues.
+
+![Settings](images/settings.png)
+
+---
+
+## Getting Started
 
 ### Prerequisites
 
-- Node.js and npm
-- VSCode
+- Node.js (v18+) and npm
+- VS Code (v1.106.1+)
+- (Optional) Google PageSpeed Insights API key for Lighthouse scans
 
-### Setup
+### Installation
 
-1. Install dependencies:
+1. Clone the repository:
+
+   ```bash
+   git clone <repo-url>
+   cd ProjectPulse
+   ```
+
+2. Install dependencies:
 
    ```bash
    npm install
    ```
 
-2. Build the extension:
+3. Build the extension:
 
    ```bash
    npm run compile
    ```
 
-3. Watch for changes:
+### Running
 
-   ```bash
-   npm run watch
-   ```
+1. Press **F5** in VS Code to launch the Extension Development Host
+2. Open the Command Palette (`Cmd+Shift+P` / `Ctrl+Shift+P`)
+3. Run: **Project Pulse: Open Dashboard**
 
-### Running the Extension
+### Development
 
-1. Press `F5` in VSCode to open a new Extension Development Host window
-2. Open the Command Palette (`Cmd+Shift+P` on Mac, `Ctrl+Shift+P` on Windows/Linux)
-3. Run the command: **Open React View**
-4. The React webview will open in a new panel in the main editor area
+Watch mode for live rebuilds:
 
-## Examples
+```bash
+npm run watch
+```
 
-### Notification Button
+---
 
-Navigate to the "Notification" page and click the button to send a notification to VSCode. This demonstrates:
+## Extension Settings
 
-- Message passing from webview to extension
-- Using `vscode.window.showInformationMessage()`
+Configure thresholds and preferences in VS Code settings (`projectPulse.*`):
 
-### Directory Listing
+| Setting                                 | Default            | Description                                |
+| --------------------------------------- | ------------------ | ------------------------------------------ |
+| `projectPulse.lighthouseApiKey`         | `""`               | Google PageSpeed Insights API key          |
+| `projectPulse.checkInterval`            | `15`               | Default check interval (minutes)           |
+| `projectPulse.sslWarningDays`           | `30`               | SSL expiry warning threshold (days)        |
+| `projectPulse.sslCriticalDays`          | `7`                | SSL expiry critical threshold (days)       |
+| `projectPulse.uptimeWarningThreshold`   | `99.5`             | Uptime warning threshold (%)               |
+| `projectPulse.lighthouseAlertThreshold` | `80`               | Lighthouse score alert threshold           |
+| `projectPulse.checks.ssl`               | `true`             | Enable SSL monitoring                      |
+| `projectPulse.checks.dns`               | `true`             | Enable DNS checks                          |
+| `projectPulse.checks.uptime`            | `true`             | Enable uptime monitoring                   |
+| `projectPulse.checks.security`          | `true`             | Enable security audits                     |
+| `projectPulse.checks.lighthouse`        | `false`            | Enable Lighthouse scans (requires API key) |
+| `projectPulse.checks.headers`           | `true`             | Enable security headers check              |
+| `projectPulse.dataDirectory`            | `~/.project-pulse` | Historical data storage path               |
 
-Navigate to the "Directory" page and click "Load Current Directory" to see the contents of your workspace. This demonstrates:
-
-- Requesting data from the extension
-- Receiving and displaying data in React
-- Using VSCode's file system API
+---
 
 ## Technology Stack
 
-- **React 19** - UI framework
-- **React Router DOM** - Client-side routing
-- **TailwindCSS v4** - Utility-first CSS framework
+- **React 19** - Webview UI
+- **Tailwind CSS v4** - Styling
 - **TypeScript** - Type safety
-- **esbuild** - Fast bundler
-- **PostCSS** - CSS processing
+- **esbuild** - Fast bundling
+- **Node.js built-in modules** - SSL (`tls`), DNS (`dns`), HTTP (`https`) checks
+- **Google PageSpeed Insights API** - Lighthouse scans
+- **OSV.dev API** - Vulnerability scanning
 
 ## Build Scripts
 
-- `npm run compile` - Build the extension
-- `npm run watch` - Watch mode for development
-- `npm run check-types` - Type checking
-- `npm run lint` - Lint the code
-- `npm test` - Run tests
+| Script                | Description                             |
+| --------------------- | --------------------------------------- |
+| `npm run compile`     | Full build (type check + lint + bundle) |
+| `npm run watch`       | Watch mode for development              |
+| `npm run check-types` | TypeScript type checking                |
+| `npm run lint`        | ESLint                                  |
+| `npm run package`     | Production build                        |
 
-## VSCode API Communication
-
-The extension uses the VSCode webview messaging API:
-
-**From Webview to Extension:**
-
-```typescript
-vscode.postMessage({
-  type: 'showNotification',
-  message: 'Hello from React!'
-});
-```
-
-**From Extension to Webview:**
-
-```typescript
-panel.webview.postMessage({
-  type: 'directoryContents',
-  data: { contents: [...] }
-});
-```
-
-## Customization
-
-### Adding New Pages
-
-1. Create a new component in `src/webview/pages/`
-2. Add a route in `src/webview/App.tsx`
-3. Add navigation link in the nav bar
-
-### Styling
-
-The extension uses TailwindCSS v4. All Tailwind utilities are available. The theme uses a dark color scheme optimized for VSCode.
-
-## Commands
-
-- `Open React View` - Opens the React webview panel
-- `Hello World` - Shows a simple notification (example command)
+---
 
 ## License
 
